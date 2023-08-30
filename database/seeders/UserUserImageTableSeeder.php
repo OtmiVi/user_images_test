@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
+use App\Models\UserImage;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,8 +17,8 @@ class UserUserImageTableSeeder extends Seeder
         $users = User::all();
         $userImages = UserImage::all();
 
-        foreach ($users as $user) {
-            $user->images()->attach($userImages->random());
+        foreach ($userImages as $image) {
+            $image->user()->attach($users->random());
         }
     }
 }
