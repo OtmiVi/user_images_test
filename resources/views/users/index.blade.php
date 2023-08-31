@@ -1,35 +1,43 @@
-<!-- resources/views/users/index.blade.php -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Users</title>
     <!-- Include necessary CSS and JS files -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<form id="user-form" enctype="multipart/form-data">
-    @csrf
-    <label for="name">Name:</label>
-    <input type="text" name="name"><br>
-    <label for="city">City:</label>
-    <input type="text" name="city"><br>
-    <label for="image">Image:</label>
-    <input type="file" name="image"><br>
-    <button type="submit">Create User</button>
-</form>
+<div class="container mt-5">
+    <form id="user-form" enctype="multipart/form-data">
+        @csrf
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" name="name">
+        </div>
+        <div class="form-group">
+            <label for="city">City:</label>
+            <input type="text" class="form-control" name="city">
+        </div>
+        <div class="form-group">
+            <label for="image">Image:</label>
+            <input type="file" class="form-control-file" name="image">
+        </div>
+        <button type="submit" class="btn btn-primary">Create User</button>
+    </form>
 
-<table id="user-table">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>City</th>
-        <th>Count</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- User data will be populated here using AJAX -->
-    </tbody>
-</table>
+    <table class="table mt-4" id="user-table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>City</th>
+            <th>Count</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- User data will be populated here using AJAX -->
+        </tbody>
+    </table>
+</div>
 
 <script>
     $(document).ready(function() {
