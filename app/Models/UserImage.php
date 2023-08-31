@@ -12,6 +12,6 @@ class UserImage extends Model
     public function user()
     {
         return $this->belongsToMany(User::class, 'user_user_image', 'user_image_id', 'user_id')
-            ->withTimestamps()->limit(1);
+            ->withTimestamps();
     }
 }
