@@ -10,13 +10,19 @@ class UserController extends Controller
 {
     public function index()
     {
-        //$users = User::withCount('images')->orderBy('images_count', 'desc')->paginate(100);
-        $users = User::withCount('images')->sortBy('images_count')->paginate(100);
-        $data = $users->sortBy('images_count');
-        dd($data);
+        return view('users.index');
+    }
 
+    public function getUsers()
+    {
+        $users = User::select('users.name', 'users.city')
+            ->leftJoin('user_user_image', 'users.id', '=', 'user_user_image.user_id')
+            ->selectRaw('COUNT(user_user_image.user_id) AS images_count')
+            ->groupBy('users.id', 'users.name', 'users.city')
+            ->orderByDesc('images_count')
+            ->paginate(100);
 
-        return response()->json($data);
+        return response()->json($users);
     }
 
     public function store(Request $request)
