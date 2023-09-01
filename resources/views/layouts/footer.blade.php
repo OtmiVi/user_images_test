@@ -9,19 +9,25 @@
 
         $('#user-form').submit(function (event) {
             event.preventDefault();
-            var formData = new FormData($(this)[0]);
+            let formData = new FormData($(this)[0]);
 
             $.ajax({
-                url: '/users/create',
+                url: '/api/users',
                 type: 'POST',
                 data: formData,
                 processData: false,
                 contentType: false,
                 success: function (response) {
-                    console.log('User created successfully');
+                    let info = '<div class="alert alert-success" role="alert">' +
+                                    response.message +
+                                '</div>';
+                    $('#info').html(info);
                 },
                 error: function (error) {
-                    console.log('Error creating user:', error);
+                    let info = '<div class="alert alert-danger" role="alert">' +
+                            JSON.parse(error.responseText).message +
+                        '</div>'
+                    $('#info').html(info);
                 }
             });
         });
@@ -36,9 +42,8 @@
             success: function (users) {
                 let tableBody = $('#user-table tbody');
                 tableBody.empty();
-                console.log(users.links);
 
-                $.each(users.data, function (index, user) {
+                $.each(users.data.data, function (index, user) {
                     let row = '<tr>' +
                         '<td>' + user.name + '</td>' +
                         '<td>' + user.city + '</td>' +
@@ -52,17 +57,19 @@
                         '<a href="#" class="page-link" data-page="' + i + '">' + i + '</a>'+
                         '</button>';
                 }
-                console.log(paginationHtml)
                 $('#pagination').html(paginationHtml);
 
                 $('.page-link').on('click', function (e) {
                     e.preventDefault();
-                    var page = $(this).data('page');
+                    let page = $(this).data('page');
                     loadUsers(page);
                 });
             },
             error: function (error) {
-                console.log('Error fetching users:', error);
+                let info = '<div class="alert alert-danger" role="alert">' +
+                    JSON.parse(error.responseText).message +
+                    '</div>'
+                $('#info').html(info);
             }
         })
     }

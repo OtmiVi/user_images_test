@@ -1,5 +1,6 @@
 @include('layouts.header')
 <div class="container mt-5">
+    <div id="info"></div>
     <form id="user-form" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
