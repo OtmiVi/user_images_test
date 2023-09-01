@@ -17,9 +17,6 @@
         <button type="submit" class="btn btn-primary">Create User</button>
     </form>
 
-    <button id="per" class="btn btn-info"> <- </button>
-    <button id="next" class="btn btn-info"> -></button>
-
     <table class="table mt-4" id="user-table">
         <thead>
         <tr>
@@ -31,5 +28,6 @@
         <tbody>
         </tbody>
     </table>
+    <div id="pagination"></div>
 </div>
 @include('layouts.footer')
