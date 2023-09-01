@@ -53,7 +53,7 @@
                     tableBody.append(row);
                 });
                 let paginationHtml = '';
-                for (let i = 1; i <= users.last_page; i++) {
+                for (let i = 1; i <= users.data.last_page; i++) {
                     paginationHtml += '<button class="btn btn-secondary m-1">' +
                         '<a href="#" class="page-link" data-page="' + i + '">' + i + '</a>' +
                         '</button>';
