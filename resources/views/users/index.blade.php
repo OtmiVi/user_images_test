@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Users</title>
-    <!-- Include necessary CSS and JS files -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
+@include('layouts.header')
 <div class="container mt-5">
     <form id="user-form" enctype="multipart/form-data">
         @csrf
@@ -25,6 +17,9 @@
         <button type="submit" class="btn btn-primary">Create User</button>
     </form>
 
+    <button id="per" class="btn btn-info"> <- </button>
+    <button id="next" class="btn btn-info"> -></button>
+
     <table class="table mt-4" id="user-table">
         <thead>
         <tr>
@@ -34,60 +29,7 @@
         </tr>
         </thead>
         <tbody>
-        <!-- User data will be populated here using AJAX -->
         </tbody>
     </table>
 </div>
-
-<script>
-    $(document).ready(function() {
-        let searchParams = new URLSearchParams(window.location.search)
-        let page = searchParams.get('page')
-        $.ajax({
-            url: `http://127.0.0.1:8000/api/users?page=${page}`,
-            async: false,
-            dataType: 'json',
-            type: 'GET',
-            success: function(users) {
-                let tableBody = $('#user-table tbody');
-                tableBody.empty();
-                console.log(users.links);
-
-                $.each(users.data, function(index, user) {
-                    let row = '<tr>' +
-                        '<td>' + user.name + '</td>' +
-                        '<td>' + user.city + '</td>' +
-                        '<td>' + user.images_count + '</td>' +
-                        '</tr>';
-                    tableBody.append(row);
-                });
-            },
-            error: function(xhr, status, error) {
-                console.log('Error fetching users:', xhr);
-                console.log(xhr.responseText); // Log the detailed response
-            }
-        });
-
-        // Handle form submission using AJAX
-        $('#user-form').submit(function(event) {
-            event.preventDefault();
-            var formData = new FormData($(this)[0]);
-
-            $.ajax({
-                url: '/users/create',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    console.log('User created successfully');
-                },
-                error: function(error) {
-                    console.log('Error creating user:', error);
-                }
-            });
-        });
-    });
-</script>
-</body>
-</html>
+@include('layouts.footer')
