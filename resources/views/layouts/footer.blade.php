@@ -19,19 +19,20 @@
                 contentType: false,
                 success: function (response) {
                     let info = '<div class="alert alert-success" role="alert">' +
-                                    response.message +
-                                '</div>';
+                        response.message +
+                        '</div>';
                     $('#info').html(info);
                 },
                 error: function (error) {
                     let info = '<div class="alert alert-danger" role="alert">' +
-                            JSON.parse(error.responseText).message +
+                        JSON.parse(error.responseText).message +
                         '</div>'
                     $('#info').html(info);
                 }
             });
         });
     });
+
     function loadUsers(page) {
         let searchParams = new URLSearchParams(window.location.search)
         $.ajax({
@@ -54,7 +55,7 @@
                 let paginationHtml = '';
                 for (let i = 1; i <= users.last_page; i++) {
                     paginationHtml += '<button class="btn btn-secondary m-1">' +
-                        '<a href="#" class="page-link" data-page="' + i + '">' + i + '</a>'+
+                        '<a href="#" class="page-link" data-page="' + i + '">' + i + '</a>' +
                         '</button>';
                 }
                 $('#pagination').html(paginationHtml);

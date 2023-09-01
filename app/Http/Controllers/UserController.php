@@ -7,6 +7,7 @@ use App\Models\UserImage;
 use App\Models\UserUserImage;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class UserController extends Controller
 {
@@ -29,7 +30,7 @@ class UserController extends Controller
                 'status' => true,
                 'data' => $users
             ], 201);
-        }catch (\Throwable  $exception) {
+        } catch (Throwable  $exception) {
             return response()->json([
                 'status' => false,
                 'message' => $exception->getMessage()
@@ -40,20 +41,20 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        try{
+        try {
             $request->validate([
                 'name' => 'required|string|max:255',
                 'city' => 'required|string|max:255',
                 'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             ]);
 
-            if ($request->hasFile('image')){
+            if ($request->hasFile('image')) {
                 $file = $request->file('image');
                 $path = $file->store('uploads', 'public');
                 $image = UserImage::create([
                     'image' => $path
                 ]);
-            }else {
+            } else {
                 return response()->json([
                     'status' => false,
                     'message' => "Image don't found"
@@ -75,12 +76,12 @@ class UserController extends Controller
                 'message' => "User created successfully",
                 'data' => $user
             ], 201);
-        }catch (ValidationException $e) {
+        } catch (ValidationException $e) {
             return response()->json([
                 'status' => false,
                 'message' => $e->errors()['name'],
             ], 422);
-        } catch (\Throwable  $exception) {
+        } catch (Throwable  $exception) {
             return response()->json([
                 'status' => false,
                 'message' => $exception->getMessage()
