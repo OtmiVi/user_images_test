@@ -34,7 +34,6 @@
     });
 
     function loadUsers(page) {
-        let searchParams = new URLSearchParams(window.location.search)
         $.ajax({
             url: `/api/users?page=${page}`,
             async: false,
