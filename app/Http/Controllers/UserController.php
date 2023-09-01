@@ -5,20 +5,33 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\UserImage;
 use App\Models\UserUserImage;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class UserController extends Controller
 {
+    /**
+     * @return Application|Factory|View|\Illuminate\Foundation\Application
+     */
     public function index()
     {
         return view('users.index');
     }
 
+    /**
+     * @return JsonResponse
+     */
     public function getUsers()
     {
         try {
+            /**
+             * @var User $users
+             */
             $users = User::select('users.name', 'users.city')
                 ->leftJoin('user_user_image', 'users.id', '=', 'user_user_image.user_id')
                 ->selectRaw('COUNT(user_user_image.user_id) AS images_count')
@@ -39,6 +52,10 @@ class UserController extends Controller
 
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(Request $request)
     {
         try {
@@ -51,6 +68,9 @@ class UserController extends Controller
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
                 $path = $file->store('uploads', 'public');
+                /**
+                 * @var UserImage $image
+                 */
                 $image = UserImage::create([
                     'image' => $path
                 ]);
@@ -61,6 +81,9 @@ class UserController extends Controller
                 ], 404);
             }
 
+            /**
+             * @var User $users
+             */
             $user = User::create([
                 'name' => $request->input('name'),
                 'city' => $request->input('city'),
