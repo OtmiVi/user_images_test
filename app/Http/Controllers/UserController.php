@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserImage;
+use App\Models\UserUserImage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -27,15 +28,39 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $user = User::create([
-            'name' => $request->input('name'),
-            'city' => $request->input('city'),
-        ]);
+        try{
+            if ($request->hasFile('image')){
+                $file = $request->file('image');
+                $path = $file->store('uploads', 'public');
+                $image = UserImage::create([
+                    'image' => $path
+                ]);
+            }else {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Image don't found"
+                ], 404);
+            }
 
-        $user->images()->create([
-            'image' => $request->input('image'), // Replace with actual image data
-        ]);
+            $user = User::create([
+                'name' => $request->input('name'),
+                'city' => $request->input('city'),
+            ]);
 
-        return response()->json($user, 201);
+            UserUserImage::create([
+                'user_id' => $user->id,
+                'user_image_id' => $image->id
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'data' => $user
+            ], 201);
+        }catch (\Throwable  $exception) {
+            return response()->json([
+                'status' => false,
+                'message' => $exception->getMessage()
+            ], 500);
+        }
     }
 }
